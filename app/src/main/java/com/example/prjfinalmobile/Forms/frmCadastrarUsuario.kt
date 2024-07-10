@@ -51,8 +51,18 @@ fun frmCadastrarUsuario(
         val passState = usuViewModel.usuState.collectAsState()
         val emailState = usuViewModel.usuState.collectAsState()
 
+        Button(
+            onClick = { onBack() },
+            modifier = Modifier
+                .padding(start = 5.dp, top = 5.dp)
+        ) {
+            Text(
+                text = "← Voltar",
 
-        Row {
+            )
+        }
+
+        Row (modifier = Modifier.padding(top = 40.dp)) {
             Text(
                 text = "Registro de Usuário",
                 textAlign = TextAlign.Center,
@@ -83,7 +93,7 @@ fun frmCadastrarUsuario(
                 value = loginState.value.login,
                 onValueChange = {usuViewModel.updateLogin(it)},
                 modifier = Modifier
-                    .padding(start = 55.dp, top = 10.dp)
+                    .padding(start = 50.dp, top = 10.dp, end = 50.dp)
             )
         }
 
@@ -134,7 +144,7 @@ fun frmCadastrarUsuario(
                     }
                 },
                 modifier = Modifier
-                    .padding(start = 55.dp, top = 10.dp)
+                    .padding(start = 50.dp, top = 10.dp, end = 50.dp)
             )
         }
 
@@ -157,7 +167,7 @@ fun frmCadastrarUsuario(
                 value = emailState.value.email,
                 onValueChange = {usuViewModel.updateEmail(it)},
                 modifier = Modifier
-                    .padding(start = 55.dp, top = 10.dp),
+                    .padding(start = 50.dp, top = 10.dp, end = 50.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
         }
