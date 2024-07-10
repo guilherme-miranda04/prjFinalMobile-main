@@ -27,33 +27,33 @@ class ViagemViewModel(val viagemDao: ViagemDao): ViewModel() {
     private val _uiState = MutableStateFlow(Viagem())
     val uiState: StateFlow<Viagem> = _uiState.asStateFlow()
 
-    fun updateDestino(destino: String){
+    fun updateDestination(destination: String){
         _uiState.update {
-            it.copy(destino = destino)
+            it.copy(destination = destination)
         }
     }
 
-    fun updateTipo(tipo: TipoViagem){
+    fun updateType(type: TipoViagem){
         _uiState.update {
-            it.copy(tipo = tipo)
+            it.copy(type = type)
         }
     }
 
-    fun updateDtIni(dtini: Date?){
+    fun updateStartDate(startDate: Date?){
         _uiState.update {
-            it.copy(dtIni = dtini)
+            it.copy(startDate = startDate)
         }
     }
 
-    fun updateDtFim(dtfim: Date?){
+    fun updateEndDate(endDate: Date?){
         _uiState.update {
-            it.copy(dtFim = dtfim)
+            it.copy(endDate = endDate)
         }
     }
 
-    fun updateOrcamento(orcamento: Float){
+    fun updateBudget(budget: Float){
         _uiState.update {
-            it.copy(orcamento = orcamento)
+            it.copy(budget = budget)
         }
     }
 
@@ -88,11 +88,11 @@ class ViagemViewModel(val viagemDao: ViagemDao): ViewModel() {
     fun setUiState(viagem: Viagem) {
         _uiState.value = uiState.value.copy(
             id = viagem.id,
-            destino = viagem.destino,
-            tipo = viagem.tipo,
-            dtIni = viagem.dtIni,
-            dtFim = viagem.dtFim,
-            orcamento = viagem.orcamento
+            destination = viagem.destination,
+            type = viagem.type,
+            startDate = viagem.startDate,
+            endDate = viagem.endDate,
+            budget = viagem.budget
         )
     }
 }

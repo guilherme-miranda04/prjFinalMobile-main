@@ -129,39 +129,39 @@ fun ViagemCard(loViagem: Viagem, onDelete: () -> Unit, onEdit: () -> Unit){
             )
     ) {
         Row(modifier = Modifier.padding(4.dp)) {
-            if (loViagem.tipo == TipoViagem.Negocio){
+            if (loViagem.type == TipoViagem.Business){
                 Image(
-                    painter = painterResource(id = R.drawable.negocio),
-                    contentDescription = "Negócio",
+                    painter = painterResource(id = R.drawable.business),
+                    contentDescription = "Business",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center,
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(90.dp)
                         .clip(CircleShape)
                         .fillMaxWidth()
                         .padding(top = 0.dp, start = 15.dp)
                 )
-            }else{
+            } else {
                 Image(
-                    painter = painterResource(id = R.drawable.lazer),
-                    contentDescription = "Lazer",
+                    painter = painterResource(id = R.drawable.leisure),
+                    contentDescription = "Leisure",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center,
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(90.dp)
                         .clip(CircleShape)
-                        .fillMaxWidth()
-                        .padding(top = 0.dp, start = 15.dp)
+
+                        .padding(top = 0.dp, start = 20.dp)
                 )
             }
 
             Column {
-                Text(text = "Destino: ${loViagem.destino}", fontSize = 25.sp, style = MaterialTheme.typography.titleLarge)
+                Text(text = "Destino: ${loViagem.destination}", fontSize = 25.sp, style = MaterialTheme.typography.titleLarge)
                 Row{
-                    Text(text = "${loViagem.dtIni?.time?.toBrazilianDateFormat()} - ${loViagem.dtFim?.time?.toBrazilianDateFormat()}")
+                    Text(text = "${loViagem.startDate?.time?.toBrazilianDateFormat()} - ${loViagem.endDate?.time?.toBrazilianDateFormat()}")
                 }
                 Row{
-                    Text(text = "Orçamento: R$ ${loViagem.orcamento}")
+                    Text(text = "Orçamento: R$ ${loViagem.budget}")
                 }
             }
         }

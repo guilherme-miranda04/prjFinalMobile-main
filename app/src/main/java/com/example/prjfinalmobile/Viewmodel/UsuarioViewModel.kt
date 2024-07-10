@@ -27,8 +27,8 @@ class UsuarioViewModel(val usuarioDao:UsuarioDao) : ViewModel() {
         _uiState.update { it.copy(login = newLogin) }
     }
 
-    fun updateSenha(newSenha : String){
-        _uiState.update { it.copy(senha = newSenha) }
+    fun updatePassword(newSenha : String){
+        _uiState.update { it.copy(password = newSenha) }
     }
 
     fun updateEmail (newEmail : String){
@@ -57,13 +57,13 @@ class UsuarioViewModel(val usuarioDao:UsuarioDao) : ViewModel() {
         return deferred.await()
     }
 
-    suspend fun findByLogin(login: String, senha: String) : Long?{
+    suspend fun findByLogin(login: String, password: String) : Long?{
         val deferred : Deferred<Usuario?> = viewModelScope.async {
             usuarioDao.findByLogin(login)
         }
         val user = deferred.await()
 
-        if (login == user?.login && senha == user.senha){
+        if (login == user?.login && password == user.password){
             return user.id
         }
         else{
@@ -75,7 +75,7 @@ class UsuarioViewModel(val usuarioDao:UsuarioDao) : ViewModel() {
         _uiState.value = usuState.value.copy(
             id = usuario.id,
             login = usuario.login,
-            senha = usuario.senha,
+            password = usuario.password,
             email = usuario.email
         )
     }

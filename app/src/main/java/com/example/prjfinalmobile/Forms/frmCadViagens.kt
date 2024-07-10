@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,14 +51,22 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
         val viagemViewModel: ViagemViewModel = viewModel(
             factory = ViagemViewModelFatory(db)
         )
+
+        LaunchedEffect(viagemId) {
+            if (viagemId != null){
+                val viagem =  viagemViewModel.findById(viagemId)
+                viagem?.let { viagemViewModel.setUiState(viagem) }
+            }
+        }
+
         val state = viagemViewModel.uiState.collectAsState()
 
-        val showDatePickerDialogInicio = remember { mutableStateOf(false) }
-        val datePickerStateInicio =
+        val showDatePickerDialogStartDate = remember { mutableStateOf(false) }
+        val datePickerStateStartDate =
             remember { mutableStateOf(DatePickerState(CalendarLocale("PT-BR"))) }
 
-        val showDatePickerDialogFinal = remember { mutableStateOf(false) }
-        val datePickerStateFinal =
+        val showDatePickerDialogEndDate = remember { mutableStateOf(false) }
+        val datePickerStateEndDate =
             remember { mutableStateOf(DatePickerState(CalendarLocale("PT-BR"))) }
 
         Column(
@@ -79,8 +88,8 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
 
             Row {
                 OutlinedTextField(
-                    value = state.value.destino,
-                    onValueChange = { viagemViewModel.updateDestino(it) },
+                    value = state.value.destination,
+                    onValueChange = { viagemViewModel.updateDestination(it) },
                     modifier = Modifier
                         .weight(4f)
                         .padding(top = 10.dp)
@@ -101,8 +110,8 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = state.value.tipo == TipoViagem.Lazer,
-                    onClick = { viagemViewModel.updateTipo(TipoViagem.Lazer) },
+                    selected = state.value.type == TipoViagem.Leisure,
+                    onClick = { viagemViewModel.updateType(TipoViagem.Leisure) },
                     modifier = Modifier
                         .weight(0.5f)
                 )
@@ -120,8 +129,8 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = state.value.tipo == TipoViagem.Negocio,
-                    onClick = { viagemViewModel.updateTipo(TipoViagem.Negocio) },
+                    selected = state.value.type == TipoViagem.Business,
+                    onClick = { viagemViewModel.updateType(TipoViagem.Business) },
                     modifier = Modifier
                         .weight(0.5f)
                 )
@@ -149,16 +158,16 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
 
                 Row {
 
-                    if (showDatePickerDialogInicio.value) {
+                    if (showDatePickerDialogStartDate.value) {
                         DatePickerDialog(
-                            onDismissRequest = { showDatePickerDialogInicio.value = false },
+                            onDismissRequest = { showDatePickerDialogStartDate.value = false },
                             confirmButton = {
                                 Button(
                                     onClick = {
-                                        datePickerStateInicio.value.selectedDateMillis?.let { millis ->
-                                            viagemViewModel.updateDtIni(Date(millis))
+                                        datePickerStateStartDate.value.selectedDateMillis?.let { millis ->
+                                            viagemViewModel.updateStartDate(Date(millis))
                                         }
-                                        showDatePickerDialogInicio.value = false
+                                        showDatePickerDialogStartDate.value = false
                                     }) {
                                     Text(text = "Escolher data")
                                 }
@@ -166,19 +175,19 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
                             modifier = Modifier
                                 .weight(4f)
                         ) {
-                            DatePicker(state = datePickerStateInicio.value)
+                            DatePicker(state = datePickerStateStartDate.value)
                         }
                     }
 
                     OutlinedTextField(
-                        value = state.value.dtIni?.time?.toBrazilianDateFormat() ?: "",
-                        onValueChange = { /* Não precisamos atualizar aqui, pois o DatePicker faz isso */ },
+                        value = state.value.startDate?.time?.toBrazilianDateFormat() ?: "",
+                        onValueChange = { /*Campo de atualização -> feito pelo DatePicker */ },
                         modifier = Modifier
                             .padding(8.dp)
                             .fillMaxWidth()
                             .onFocusChanged {
                                 if (it.isFocused) {
-                                    showDatePickerDialogInicio.value = true
+                                    showDatePickerDialogStartDate.value = true
                                 }
                             },
                         readOnly = true
@@ -200,16 +209,16 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
 
                 Row {
 
-                    if (showDatePickerDialogFinal.value) {
+                    if (showDatePickerDialogEndDate.value) {
                         DatePickerDialog(
-                            onDismissRequest = { showDatePickerDialogFinal.value = false },
+                            onDismissRequest = { showDatePickerDialogEndDate.value = false },
                             confirmButton = {
                                 Button(
                                     onClick = {
-                                        datePickerStateFinal.value.selectedDateMillis?.let { millis ->
-                                            viagemViewModel.updateDtFim(Date(millis))
+                                        datePickerStateEndDate.value.selectedDateMillis?.let { millis ->
+                                            viagemViewModel.updateEndDate(Date(millis))
                                         }
-                                        showDatePickerDialogFinal.value = false
+                                        showDatePickerDialogEndDate.value = false
                                     }) {
                                     Text(text = "Escolher data")
                                 }
@@ -217,19 +226,19 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
                             modifier = Modifier
                                 .weight(4f)
                         ) {
-                            DatePicker(state = datePickerStateFinal.value)
+                            DatePicker(state = datePickerStateEndDate.value)
                         }
                     }
 
                     OutlinedTextField(
-                        value = state.value.dtIni?.time?.toBrazilianDateFormat() ?: "",
-                        onValueChange = { /* Não precisamos atualizar aqui, pois o DatePicker faz isso */ },
+                        value = state.value.startDate?.time?.toBrazilianDateFormat() ?: "",
+                        onValueChange = { /* Campo de atualização -> feito pelo DatePicker */ },
                         modifier = Modifier
                             .padding(8.dp)
                             .fillMaxWidth()
                             .onFocusChanged {
                                 if (it.isFocused) {
-                                    showDatePickerDialogFinal.value = true
+                                    showDatePickerDialogEndDate.value = true
                                 }
                             },
                         readOnly = true
@@ -251,8 +260,8 @@ fun frmCadViagens(onBack: ()->Unit, viagemId : Long?) {
 
                 Row {
                     OutlinedTextField(
-                        value = state.value.orcamento?.toString() ?: "",
-                        onValueChange = { viagemViewModel.updateOrcamento(it.toFloat()) },
+                        value = state.value.budget?.toString() ?: "",
+                        onValueChange = { viagemViewModel.updateBudget(it.toFloat()) },
                         modifier = Modifier
                             .weight(4f)
                             .padding(top = 10.dp)

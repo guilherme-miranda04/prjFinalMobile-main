@@ -107,8 +107,8 @@ fun frmLogin(onCadastrarUsuario: ()->Unit, onLogin: (id: String) ->Unit){
             val visible = remember { mutableStateOf(true) }
 
             OutlinedTextField(
-                value = passState.value.senha,
-                onValueChange = { usuViewModel.updateSenha(it) },
+                value = passState.value.password,
+                onValueChange = { usuViewModel.updatePassword(it) },
                 label = {
                     Text(text = "Senha")
                 },
@@ -136,7 +136,7 @@ fun frmLogin(onCadastrarUsuario: ()->Unit, onLogin: (id: String) ->Unit){
                     }
                 },
                 modifier = Modifier
-                    .padding(top = 15.dp)
+                    .padding(top = 15.dp, bottom = 30.dp)
                     .fillMaxWidth()
             )
 
@@ -145,7 +145,7 @@ fun frmLogin(onCadastrarUsuario: ()->Unit, onLogin: (id: String) ->Unit){
                     MainScope().launch {
                         val pass = usuViewModel.findByLogin(
                             usuViewModel.usuState.value.login,
-                            usuViewModel.usuState.value.senha
+                            usuViewModel.usuState.value.password
                         )
 
                         if (pass != null) {
@@ -154,7 +154,7 @@ fun frmLogin(onCadastrarUsuario: ()->Unit, onLogin: (id: String) ->Unit){
                             coroutineScope.launch {
                                 focus.clearFocus()
                                 snackbarHostState.showSnackbar(
-                                    message = "Usuário ou Senha incorretos!",
+                                    message = "Usuário ou a Senha foram informados incorretamente, favor verificar e tentar novamente!",
                                     withDismissAction = true
                                 )
                             }
@@ -177,7 +177,10 @@ fun frmLogin(onCadastrarUsuario: ()->Unit, onLogin: (id: String) ->Unit){
                     .fillMaxWidth()
                     .padding(top = 10.dp)
             ) {
-                Text(text = "Registrar")
+                Text(
+                    text = "Registrar",
+                    fontSize = 22.sp
+                )
             }
 
 

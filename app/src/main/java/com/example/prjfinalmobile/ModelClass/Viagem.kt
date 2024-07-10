@@ -5,15 +5,15 @@ import java.util.Date
 
 
 enum class TipoViagem(){
-    Lazer,
-    Negocio,
+    Leisure,
+    Business,
 }
 
 class Viagem(
     val id: Long = 1,
-    val destino: String = "",
-    val tipo: TipoViagem = TipoViagem.Lazer,
-    val dtini: Date? = null,
-    val dtFim: Date? = null,
-    val orcamento: Float? = null
+    val destination: String = "",
+    val type: TipoViagem = TipoViagem.Leisure,
+    val startDate: Date? = null,
+    val endDate: Date? = null,
+    val budget: Float? = null
 )

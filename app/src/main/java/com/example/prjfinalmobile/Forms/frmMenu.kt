@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -71,8 +72,8 @@ fun frmHome(id: String){
 
             Row {
                 Text(
-                    text = "Bem-vindo: " + state.value.login,
-                    fontSize = 34.sp
+                    text = "Sejá bem-vindo novamente! " + state.value.login,
+                    fontSize = 24.sp
                 )
             }
         }
@@ -89,7 +90,8 @@ fun frmMenu(id: String)
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.value?.destination
 
-            BottomNavigation {
+            BottomNavigation( backgroundColor = Color.Gray // Definindo a cor de fundo para cinza
+            ) {
 
                 BottomNavigationItem(
                     selected = isSelected(currentDestination, "frmHome"),

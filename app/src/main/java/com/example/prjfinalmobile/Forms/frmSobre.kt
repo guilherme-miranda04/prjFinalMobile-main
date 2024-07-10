@@ -13,8 +13,7 @@ fun frmSobre(){
 
     ){
         Text(text = "Desenvolvido por: \n" +
-                "Rodrigo de Paula Pires Filho \n" +
-                "19 anos"
+                "Guilherme Miranda!"
         )
     }
 }
